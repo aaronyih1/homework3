@@ -6,16 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "3/guitar.cpp"
-            timestampString = "451613696.647401"
+            timestampString = "451868525.378509"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "23"
-            endingLineNumber = "23"
-            landmarkName = "isTuneWellFormed(string tune)"
+            startingLineNumber = "70"
+            endingLineNumber = "70"
+            landmarkName = "tuneEndsEarly(string tuneInput)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
