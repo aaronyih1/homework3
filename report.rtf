@@ -1,13 +1,70 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
-\margl1440\margr1440\vieww12600\viewh7800\viewkind0
+\margl1440\margr1440\vieww9540\viewh13500\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qr
 
 \f0\fs24 \cf0 Aaron Yih\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\qc
 \cf0 Project 3\
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
-\cf0 a.) The most notable obstacle I overcame was organizational problems. This was the first project where there were multiple functions interacting. Using proper naming conventions and descriptive comments, makes the code readable so that when you go back to it, you can pick up where you left off. \
+\cf0 a.) The most notable obstacle I overcame was organization. This was the first project where there were multiple functions interacting. Using proper naming conventions and descriptive comments, makes the code readable so that when you go back to it, you can pick up where you left off rather than having to spend time figuring out what you\'92ve already done.\
+\
+b.) \
+main method\
+	call translateTune method\
+	\
+isTuneWellFormed method\
+	check if:\
+		1.) the tune is well formed\
+		2.) the tune is well formed and no long beats  < 2\
+		3.) the tune is well formed and has enough empty beats after a long beat\
+		4.) the tune is well formed and the tune ends early\
+		5.) default case\
+\
+translateTune method\
+	return corresponding code number to previously checked conditions\
+\
+findLowest method\
+	cycle through string\
+		check if any of the chars = 0 or 1 because then false\
+\
+emptyBeats method\
+	cycle through string\
+		find numbers in the string\
+		check if there are that number of slashes after the color\
+\
+tuneEndsEarly method\
+	start from the end count until not slashes anymore\
+	determine if number of slashes is equal to the specified number of long beats\
+	if not, find number of slashes in string\
+\
+actualTranslation method\
+	cycle through string\
+		make sure there are no invalid characters (ie. letters other than the specified ones or weird symbols)\
+		convert numeric long beats to repeated uppercase letters\
+		replace empty beats with \'91x\'92s		\
+c.) \
+\
+	i.) empty string test(\'93\'94)\
+	ii.) empty beat test(\'93///\'93)\
+	iii.) valid test case(\'933g///b/2y//\'93)\
+	iv.) tune not well formed(\'934r///*d/\'93)\
+	v.) tune doesn\'92t end with \'91/\'91 i.e. not well formed(\'93G/r\'94)\
+	vi.) tune does not have enough empty beats after long beat(\'9344g////r/\'93)\
+	vii.) tune ends early(\'93g/r/y/4g//\'93)\
+	viii.) tune has upper case single beat(\'93G/\'93)\
+	ix.) tune has long beat less than 2(\'931g/y/b//\'93)\
+	x.) tune has double digit number for long beat(\'9310g//////////b/\'93)\
+	xi.) tune has a triple digit number for long beat(\'93100/////\'85\'94)\
+	xii.) tune has 2 errors (\'93999g/t/\'93)\
+	reasons:\
+	i.) Tests a possible and valid user input that has potential to cause an issue.\
+	ii.) Tests a possible and valid user input that has potential to cause an issue.\
+	ii.)\
+\
+\
+\
+\
 \
 }

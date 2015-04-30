@@ -21,11 +21,12 @@ int translateTune(string tune, string& instructions, int& badBeat);
 
 int main() {
      int output;
-     string userInput = "//";
+     string userInput = "10g//////////b/";
      string instructions;
      int badBeat;
      output = translateTune(userInput, instructions, badBeat);
      cerr << output << endl;
+    //cerr << emptyBeats("44g////r/") << endl;
 }
 
 bool isTuneWellFormed(string tune){
@@ -34,6 +35,9 @@ bool isTuneWellFormed(string tune){
         if(tune.length() == 0)
         {
             return(true);
+        }
+        else if(tune[tune.length()-1] != '/'){
+            return(false);
         }
         else if(!isalnum(tune[i])&&(tune[i] != '/')) //checks tune to see if there are any invalid characters
         {
@@ -64,33 +68,44 @@ bool isTuneWellFormed(string tune){
 
 int findLowest(string tuneInput) // this method finds whether there is a 1 or a 0 beat color in the tune
 {
-    for(int j = 0; j < tuneInput.length(); j++)
+    for(int j = 0; j < tuneInput.length()-1; j++)
     {
-        if(tuneInput[j]=='0')
+        if((tuneInput[j]-48==1 || tuneInput[j]-48==0)&&isalpha(tuneInput[j+1])&& !(isalnum(tuneInput[j-1])))
+        {
             return(0);
-        else if(tuneInput[j] == '1')
-            return(1);
+        }
+            
     }
-    return(3);
+    return(1);
 }
 
 int emptyBeats(string tuneInput) //this method checks that there are sufficient empty beats after a long beat
 {
     int counter=0;
-    for(int j = 0; j < tuneInput.length(); j++)
+    for(int j = 0; j < tuneInput.length()-1; j++)
     {
-        if(isdigit(tuneInput[j]))
+        if((isdigit(tuneInput[j]))&&(isalpha(tuneInput[j+1])))
         {
-            for(int i = j+2; tuneInput[i] =='/'; i++)
+            for(int i = j+2; (isalnum(tuneInput[i])); i++)
             {
                 counter++;
             }
-            if(counter != (tuneInput[j]-48))
+            if(counter < (tuneInput[j]-48))
             {
                 return(counter);
             }
         }
-        counter = 0;
+        else if((isdigit(tuneInput[j]))&&(isdigit(tuneInput[j+1])))
+        {
+            for(int i = j+3; (isalnum(tuneInput[i])); i++)
+            {
+                counter++;
+            }
+            if(counter < ((tuneInput[j]-48)*10)+((tuneInput[j+1])-48))
+            {
+                return(counter);
+            }
+        }
     }
     return(0);
 }
@@ -109,6 +124,10 @@ int tuneEndsEarly(string tuneInput) //this method checks if the tune ends early,
     {
         return(0);
     }
+    else if(counter == 1)
+    {
+        return(0);
+    }
     else if(counter != (tuneInput[i-1]-48))
     {
         for(int j = 0; j<tuneInput.length();j++)
@@ -119,21 +138,15 @@ int tuneEndsEarly(string tuneInput) //this method checks if the tune ends early,
             }
         }
     }
-    cerr << counter2 <<endl;
     return(counter2+1);
 }
-string actualTranslation(string inputTune) //this function does the actualy translation to the right syntax
+string actualTranslation(string inputTune) //this function does the actual translation to the right syntax
 {
     string output;
     int slashCounter=0;
-    for(int i = 0; i<inputTune.length(); i++)
+    for(int i = 0; i < inputTune.length()-1; i++)
     {
-        if(((isalpha(inputTune[i])&&(islower(inputTune[i]))))||(isalpha(inputTune[i])&&(isupper(inputTune[i]))))
-           {
-               output += tolower(inputTune[i]);
-               slashCounter = 0;
-           }
-        else if(isdigit(inputTune[i]))
+        if(isdigit(inputTune[i])&&isalpha(inputTune[i+1]))
         {
             for(int j = 0; j<(inputTune[i]-48); j++)
             {
@@ -142,12 +155,36 @@ string actualTranslation(string inputTune) //this function does the actualy tran
             i+=(inputTune[i]-47);
             slashCounter = 0;
         }
-        else if(i==0)
+        else if(isdigit(inputTune[i])&&isdigit(inputTune[i+1]))
         {
-            output+= 'x';
-            slashCounter++;
+            for(int j = 0; j<(((inputTune[i]-48)*10)+(inputTune[i+1]-48)); j++)
+            {
+                output +=toupper(inputTune[i+2]);
+            }
+            cerr<<((((inputTune[i]-48)*10)+(inputTune[i+1]-48))+1)<< endl;
+            i=i+((((inputTune[i]-48)*10)+(inputTune[i+1]-48))+1);
+            slashCounter = 0;
         }
-        else if(inputTune[i]=='/')
+        else if(isalpha(inputTune[i]))
+        {
+            output += tolower(inputTune[i]);
+            slashCounter = 0;
+        }
+    }
+    /*for(int i = 0; i<inputTune.length(); i++)
+    {
+        if(isalpha(inputTune[i]))
+           {
+               cerr<<"you fail ma" << endl;
+               cerr<<output<<endl;
+               output += tolower(inputTune[i]);
+               cerr<<"this is outpu2:"<<output<<endl;
+               slashCounter = 0;
+               i++;
+           }
+    } */
+    for(int i=1; i< inputTune.length();i++){
+        if((inputTune[i+1]=='/')&& isdigit(inputTune[i-1]))
         {
             slashCounter++;
             if(slashCounter>1)
@@ -157,7 +194,7 @@ string actualTranslation(string inputTune) //this function does the actualy tran
             
         }
     }
-    return(output);
+        return(output);
 }
 int translateTune(string tune, string& instructions, int& badBeat){
 
@@ -165,7 +202,7 @@ int translateTune(string tune, string& instructions, int& badBeat){
     {
         return(1);
     }
-    else if(isTuneWellFormed(tune)&& (findLowest(tune)<2))
+    else if(isTuneWellFormed(tune)&& (findLowest(tune)==0))
     {
         badBeat = findLowest(tune);
         return(2);
@@ -175,7 +212,7 @@ int translateTune(string tune, string& instructions, int& badBeat){
         badBeat = emptyBeats(tune);
         return(3);
     }
-    else if (isTuneWellFormed(tune) && (tuneEndsEarly(tune)>1))
+    else if (isTuneWellFormed(tune) && ((tuneEndsEarly(tune))>1))
     {
         badBeat = tuneEndsEarly(tune);
         return(4);
