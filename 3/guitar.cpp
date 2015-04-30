@@ -21,22 +21,30 @@ int translateTune(string tune, string& instructions, int& badBeat);
 
 int main() {
      int output;
-     string userInput = "";
+     string userInput = "///";
      string instructions;
      int badBeat;
      output = translateTune(userInput, instructions, badBeat);
      cerr << output << endl;
-    //cerr << emptyBeats("44g////r/") << endl;
 }
 
 bool isTuneWellFormed(string tune){
+    int count=0;
+    for(int i=0; i<tune.length();i++)
+    {
+        if(isspace(tune[i]))
+        {
+            count++;
+        }
+    }
+    if(count == tune.length())
+    {
+        return(true);
+    }
     for(int i=0; i<tune.length()-1; i++)
     {
-        if(tune.length() == 0)
+        if(tune[tune.length()-1] != '/')
         {
-            return(true);
-        }
-        else if(tune[tune.length()-1] != '/'){
             return(false);
         }
         else if(!isalnum(tune[i])&&(tune[i] != '/')) //checks tune to see if there are any invalid characters
@@ -68,6 +76,10 @@ bool isTuneWellFormed(string tune){
 
 int findLowest(string tuneInput) // this method finds whether there is a 1 or a 0 beat color in the tune
 {
+    if(tuneInput.length()==0)
+    {
+        return(1);
+    }
     for(int j = 0; j < tuneInput.length()-1; j++)
     {
         if((tuneInput[j]-48==1 || tuneInput[j]-48==0)&&isalpha(tuneInput[j+1])&& !(isalnum(tuneInput[j-1])))
@@ -81,12 +93,16 @@ int findLowest(string tuneInput) // this method finds whether there is a 1 or a 
 
 int emptyBeats(string tuneInput) //this method checks that there are sufficient empty beats after a long beat
 {
+    if(tuneInput.length()==0)
+    {
+        return(0);
+    }
     int counter=0;
     for(int j = 0; j < tuneInput.length()-1; j++)
     {
         if((isdigit(tuneInput[j]))&&(isalpha(tuneInput[j+1])))
         {
-            for(int i = j+2; (isalnum(tuneInput[i])); i++)
+            for(int i = j+2; tuneInput[i]=='/'; i++)
             {
                 counter++;
             }
@@ -97,7 +113,7 @@ int emptyBeats(string tuneInput) //this method checks that there are sufficient 
         }
         else if((isdigit(tuneInput[j]))&&(isdigit(tuneInput[j+1])))
         {
-            for(int i = j+3; (isalnum(tuneInput[i])); i++)
+            for(int i = j+3; tuneInput[i]=='/'; i++)
             {
                 counter++;
             }
@@ -111,6 +127,10 @@ int emptyBeats(string tuneInput) //this method checks that there are sufficient 
 }
 int tuneEndsEarly(string tuneInput) //this method checks if the tune ends early, and if it does, it returns 1+the total number of beats
 {
+    if(tuneInput.length()==0)
+    {
+        return(0);
+    }
     int i = tuneInput.length()-1;
     int counter = 0;
     int counter2 = 0;
@@ -144,6 +164,11 @@ string actualTranslation(string inputTune) //this function does the actual trans
 {
     string output;
     int slashCounter=0;
+    if(inputTune.length()==0)
+    {
+        output="";
+        return(output);
+    }
     for(int i = 0; i < inputTune.length()-1; i++)
     {
         if(isdigit(inputTune[i])&&isalpha(inputTune[i+1]))
@@ -161,14 +186,18 @@ string actualTranslation(string inputTune) //this function does the actual trans
             {
                 output +=toupper(inputTune[i+2]);
             }
-            cerr<<((((inputTune[i]-48)*10)+(inputTune[i+1]-48))+1)<< endl;
-            i=i+((((inputTune[i]-48)*10)+(inputTune[i+1]-48))+1);
+            cerr<<((((inputTune[i]-48)*10)+(inputTune[i+1]-48))+3)<< endl;
+            i=i+((((inputTune[i]-48)*10)+(inputTune[i+1]-48))+3);
             slashCounter = 0;
         }
         else if(isalpha(inputTune[i]))
         {
             output += tolower(inputTune[i]);
             slashCounter = 0;
+        }
+        if(inputTune[i]=='/')
+        {
+            output+='x';
         }
     }
     /*for(int i = 0; i<inputTune.length(); i++)
@@ -183,6 +212,18 @@ string actualTranslation(string inputTune) //this function does the actual trans
                i++;
            }
     } */
+    int number=0;
+    for(int i=0; i<inputTune.length(); i++)
+    {
+        if(inputTune[i]=='/')
+        {
+            number++;
+        }
+    }
+    if(number==inputTune.length())
+    {
+        output+='x';
+    }
     for(int i=1; i< inputTune.length();i++){
         if((inputTune[i+1]=='/')&& isdigit(inputTune[i-1]))
         {
