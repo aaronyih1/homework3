@@ -46,22 +46,35 @@ actualTranslation method\
 		replace empty beats with \'91x\'92s		\
 c.) \
 \
-	i.) empty string test(\'93\'94)\'97> not working\
-	ii.) empty beat test(\'93///\'93)\'97>not working\
+	i.) empty string test(\'93\'94)\
+	ii.) empty beat test(\'93///\'93)\
 	iii.) valid test case(\'933g///b/2y//\'93)\
 	iv.) tune not well formed(\'934r///*d/\'93)\
 	v.) tune doesn\'92t end with \'91/\'91 i.e. not well formed(\'93G/r\'94)\
-	vi.) tune does not have enough empty beats after long beat(\'9344g////r/\'93)\'97> not working\
+	vi.) tune does not have enough empty beats after long beat(\'9344g////r/\'93)\
 	vii.) tune ends early(\'93g/r/y/4g//\'93)\
 	viii.) tune has upper case single beat(\'93G/\'93)\
 	ix.) tune has long beat less than 2(\'931g/y/b//\'93)\
-	x.) tune has double digit number for long beat(\'9310g//////////b/\'93)\
+	x.) tune has double digit number for long beat and is valid(\'9310g//////////b/\'93)\
 	xi.) tune has a triple digit number for long beat(\'93100/////\'85\'94)\
 	xii.) tune has 2 errors (\'93999g/t/\'93)\
-	reasons:\
+	xiii.) tune has several empty spaces(\'93   \'93)\
+	xiv.) valid test case with empty beats(\'934g////b////\'93)\
+reasons:\
 	i.) Tests a possible and valid user input that has potential to cause an issue.\
 	ii.) Tests a possible and valid user input that has potential to cause an issue.\
-	ii.)\
+	iii.) Tests a standard tune that should translate; acts as a control.\
+	iv.) Tests an invalid but possible user input that might not be caught. \
+	v.) Tests an invalid but possible user input that might not be caught .\
+	vi.) Tests an invalid but possible user input that might not be caught .\
+	vii.) Tests an invalid but possible user input that might not be caught .\
+	viii.) Tests a valid but improperly formatted user input.\
+	ix.) Tests an invalid but possible user input that might not be caught. \
+	x.) Tests a valid user input that might translate incorrectly.\
+	xi.) Tests an invalid but possible user input that might not be caught. \
+	xii.) Tests an invalid user input with two mistakes to see if it reports the 1st one.\
+	xiii.) Tests a possible and valid user input that has potential to cause an issue.\
+	xiv.) Tests a valid user input that may translate incorrectly.\
 \
 \
 \

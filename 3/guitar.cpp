@@ -21,7 +21,7 @@ int translateTune(string tune, string& instructions, int& badBeat);
 
 int main() {
      int output;
-     string userInput = "///";
+    string userInput = "4g////b////";
      string instructions;
      int badBeat;
      output = translateTune(userInput, instructions, badBeat);
@@ -106,7 +106,11 @@ int emptyBeats(string tuneInput) //this method checks that there are sufficient 
             {
                 counter++;
             }
-            if(counter < (tuneInput[j]-48))
+            if((counter<(tuneInput[j])-48)&&(j+counter+2==tuneInput.length()))
+            {
+                return(0);
+            }
+            else if(counter < (tuneInput[j]-48))
             {
                 return(counter);
             }
@@ -117,7 +121,11 @@ int emptyBeats(string tuneInput) //this method checks that there are sufficient 
             {
                 counter++;
             }
-            if(counter < ((tuneInput[j]-48)*10)+((tuneInput[j+1])-48))
+            if((counter<(tuneInput[j])-48)&&(j+counter+3==tuneInput.length()))
+            {
+                return(0);
+            }
+            else if(counter < ((tuneInput[j]-48)*10)+((tuneInput[j+1])-48))
             {
                 return(counter);
             }
@@ -148,7 +156,7 @@ int tuneEndsEarly(string tuneInput) //this method checks if the tune ends early,
     {
         return(0);
     }
-    else if(counter != (tuneInput[i-1]-48))
+    else if(counter < (tuneInput[i-1]-48))
     {
         for(int j = 0; j<tuneInput.length();j++)
         {
@@ -164,6 +172,7 @@ string actualTranslation(string inputTune) //this function does the actual trans
 {
     string output;
     int slashCounter=0;
+    bool flag =true;
     if(inputTune.length()==0)
     {
         output="";
@@ -186,34 +195,34 @@ string actualTranslation(string inputTune) //this function does the actual trans
             {
                 output +=toupper(inputTune[i+2]);
             }
-            cerr<<((((inputTune[i]-48)*10)+(inputTune[i+1]-48))+3)<< endl;
             i=i+((((inputTune[i]-48)*10)+(inputTune[i+1]-48))+3);
             slashCounter = 0;
+            flag=false;
         }
         else if(isalpha(inputTune[i]))
         {
             output += tolower(inputTune[i]);
             slashCounter = 0;
         }
-        if(inputTune[i]=='/')
+        else if((inputTune[i]=='/')&&(inputTune[i+1]=='/'))
         {
             output+='x';
         }
     }
-    /*for(int i = 0; i<inputTune.length(); i++)
+    if(!flag)
     {
-        if(isalpha(inputTune[i]))
-           {
-               cerr<<"you fail ma" << endl;
-               cerr<<output<<endl;
-               output += tolower(inputTune[i]);
-               cerr<<"this is outpu2:"<<output<<endl;
-               slashCounter = 0;
-               i++;
-           }
-    } */
+        for(int i = 1; i<inputTune.length()-1; i++)
+        {
+            if(isalpha(inputTune[i])&&(inputTune[i-1]=='/')&&(inputTune[i+1]=='/'))
+            {
+                output += tolower(inputTune[i]);
+                slashCounter = 0;
+                i++;
+            }
+        }
+    }
     int number=0;
-    for(int i=0; i<inputTune.length(); i++)
+   for(int i=0; i<inputTune.length(); i++)
     {
         if(inputTune[i]=='/')
         {
@@ -223,17 +232,6 @@ string actualTranslation(string inputTune) //this function does the actual trans
     if(number==inputTune.length())
     {
         output+='x';
-    }
-    for(int i=1; i< inputTune.length();i++){
-        if((inputTune[i+1]=='/')&& isdigit(inputTune[i-1]))
-        {
-            slashCounter++;
-            if(slashCounter>1)
-            {
-                output += 'x';
-            }
-            
-        }
     }
         return(output);
 }
