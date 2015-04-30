@@ -21,7 +21,7 @@ int translateTune(string tune, string& instructions, int& badBeat);
 
 int main() {
      int output;
-     string userInput = "10g//////////b/";
+     string userInput = "";
      string instructions;
      int badBeat;
      output = translateTune(userInput, instructions, badBeat);
